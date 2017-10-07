@@ -10,15 +10,15 @@ resource "aws_key_pair" "my-key" {
 
 
 provider "aws" {
-	region = "us-east-1"
+	region = "ap-southeast-1"
   	access_key = "${var.AWS_ACCESS_KEY}"
   	secret_key = "${var.AWS_SECRET_KEY}"
 }
 
 # Create a web server
 resource "aws_instance" "web" {
-  ami = "ami-fda5e392"
-	instance_type = "t1.micro"
+ 	ami = "ami-9695e2f5"
+	instance_type = "t2.micro"
 	key_name = "${aws_key_pair.my-key.key_name}"
 	tags {
 		Name = "Mini Aws Terra"
