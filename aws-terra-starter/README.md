@@ -21,4 +21,3 @@
 * $aws route53 create-reusable-delegation-set --caller-reference 12345
 * Save the JSON result
 * $curl canhazip.com  // This will give your public ip address which can be used for dns later
-* $cd <project dir> 
