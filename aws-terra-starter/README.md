@@ -18,7 +18,7 @@
 * Install terraform  based on distro
 * Install ansible based on the distro
 
-* $aws route53 create-reusable-deligation-set --caller-reference 12345
+* $aws route53 create-reusable-delegation-set --caller-reference 12345
 * Save the JSON result
 * $curl canhazip.com  // This will give your public ip address which can be used for dns later
 
