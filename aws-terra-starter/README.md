@@ -1,4 +1,4 @@
-# Aws Terraform Starter Project
+# Aws Terraform Complete Cluster with Route53 - Wordpress
 
 # Steps
 * ssh-keygen -f my-key
