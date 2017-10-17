@@ -15,6 +15,7 @@ you won't be able to connect to the cluster.
 
 ## Build the cluster
 ```bash
+$ terraform plan
 $ terraform apply
 ```
 ## Create a tunnel for `kubectl`
