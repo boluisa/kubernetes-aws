@@ -51,33 +51,6 @@ coreos:
           content: |
             [Service]
             ExecStartPre=-/usr/bin/etcdctl mk /coreos.com/network/config '{"Network": "10.244.0.0/16", "Backend": {"Type": "vxlan"}}'
-    - name: docker-cache.service
-      command: start
-      content: |
-        [Unit]
-        Description=Docker cache proxy
-        Requires=early-docker.service
-        After=early-docker.service
-        Before=early-docker.target
-
-        [Service]
-        Restart=always
-        TimeoutStartSec=0
-        RestartSec=5
-        Environment=TMPDIR=/var/tmp/
-        Environment=DOCKER_HOST=unix:///var/run/early-docker.sock
-        ExecStartPre=-/usr/bin/docker kill docker-registry
-        ExecStartPre=-/usr/bin/docker rm docker-registry
-        ExecStartPre=/usr/bin/docker pull quay.io/devops/docker-registry:latest
-        # GUNICORN_OPTS is an workaround for
-        # https://github.com/docker/docker-registry/issues/892
-        ExecStart=/usr/bin/docker run --rm --net host --name docker-registry \
-            -e STANDALONE=false \
-            -e GUNICORN_OPTS=[--preload] \
-            -e MIRROR_SOURCE=https://registry-1.docker.io \
-            -e MIRROR_SOURCE_INDEX=https://index.docker.io \
-            -e MIRROR_TAGS_CACHE_TTL=1800 \
-            quay.io/devops/docker-registry:latest
     - name: docker.service
       drop-ins:
         - name: 51-docker-mirror.conf
@@ -85,11 +58,9 @@ coreos:
             [Unit]
             # making sure that docker-cache is up and that flanneld finished
             # startup, otherwise containers won't land in flannel's network...
-            Requires=docker-cache.service
-            After=docker-cache.service
 
             [Service]
-            Environment=DOCKER_OPTS='--registry-mirror=http://$private_ipv4:5000'
+            Environment=DOCKER_OPTS='--insecure-registry=10.0.0.10:5000'
     - name: get-kubectl.service
       command: start
       content: |
