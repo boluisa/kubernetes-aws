@@ -1,0 +1,22 @@
+#cloud-config
+package_upgrade: true
+package_reboot_if_required: true
+packages:
+ - docker.io
+runcmd:
+ - ln -sf /usr/bin/docker.io /usr/local/bin/docker
+ - sed -i '$acomplete -F _docker docker' /etc/bash_completion.d/docker.io
+ - echo "DOCKER_OPTS=\"--insecure-registry 10.0.0.10:5000\"" >> /etc/default/docker
+ - echo "10.0.0.10 ip-10-0-0-10" >> /etc/hosts
+ - service docker restart
+ - apt-get update && apt-get install -y apt-transport-https
+ - curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
+ - echo "deb http://apt.kubernetes.io/ kubernetes-xenial main" >> /etc/apt/sources.list.d/kubernetes.list
+ - apt-get update
+ - apt-get install -y kubelet kubeadm kubectl
+ - kubeadm init >> /root/kubeadm-init.txt
+ - mkdir -p /home/ubuntu/.kube
+ - cp -i /etc/kubernetes/admin.conf /home/ubuntu/.kube/config
+ - chown ubuntu:ubuntu /home/ubuntu/.kube/config
+ - kubectl apply -f https://docs.projectcalico.org/v2.6/getting-started/kubernetes/installation/hosted/kubeadm/1.6/calico.yaml
+final_message: "Your Kubernetes master is now ready"
