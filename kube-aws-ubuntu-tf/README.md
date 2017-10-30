@@ -1,15 +1,15 @@
 # tf-aws-kubernetes
 
-This is a PoC for using [Terraform](https://terraform.io) to build and deploy a [Kubernetes](http://kubernetes.io/) cluster to an AWS VPC.
+This is a PoC for using [Terraform](https://terraform.io) to build and deploy a [Kubernetes](http://kubernetes.io/) cluster to an AWS VPC based on Ubuntu 16.
 
 Currently this is a PoC, and proper security measures are not implemented.
 
-Repeat after me: **not for production use**
+**not for production use**
 
 ## Things you will need
 
   * An Amazon Web Services account
-  * Potentially a few $ (this demo spawns several t2.small / m3.mediums)
+  * Potentially a few $ (this demo spawns several m3.mediums)
   * [Terraform](https://terraform.io)
 
 ## Create a keypair in AWS
@@ -35,21 +35,11 @@ $ $(terraform output create-tunnel)
 
 ## Check your nodes
 ```bash
+# get the kube init tokens and join the master
 $ kubectl get nodes
 ```
 ```
 NAME         LABELS                              STATUS
 10.0.0.110   kubernetes.io/hostname=10.0.0.110   Ready
 10.0.0.16    kubernetes.io/hostname=10.0.0.16    Ready
-10.0.0.52    kubernetes.io/hostname=10.0.0.52    Ready
-```
-
-## Open the UI in your browser
-```bash
-$ open $(terraform output ui-url)
-```
-
-## SSH into the master
-```bash
-$ ssh core@$(terraform output master-ip)
 ```
