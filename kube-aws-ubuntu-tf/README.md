@@ -28,14 +28,10 @@ you won't be able to connect to the cluster.
 $ terraform apply
 ```
 
-## Create a tunnel for `kubectl`
-```bash
-$ $(terraform output create-tunnel)
-```
-
 ## Check your nodes
 ```bash
-# get the kube init tokens and join the master
+# Login to master and get the kube init tokens and join the master
+# Login to node and join the master
 $ kubectl get nodes
 ```
 ```
